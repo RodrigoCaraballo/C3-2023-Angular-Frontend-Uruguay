@@ -7,13 +7,13 @@ import { SignInModel, SignInGoogleModel } from '../interfaces/sign-in.interface'
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CustomerModel } from '../interfaces/customer.interface';
 import { AccountModel } from '../interfaces/account.model';
-import { env } from 'process';
 import { CreateDepositModel } from '../interfaces/create-deposit.model';
 import { DepositModel } from '../interfaces/deposit.model';
-import { map } from 'rxjs';
 import { CreateTransferModel } from '../interfaces/create-transfer.dto';
 import { TransferModel } from '../interfaces/transfer.model';
 import { Auth, signInWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
+import { PaginationAndDataRange } from '../interfaces/pagination.model';
+import { UpdateCustomerModel } from '../interfaces/update-customer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +89,13 @@ export class ServiceService {
     return this.http.get<boolean>(`${environment.apiBase}/customer/check-email/${email}`)
   }
 
+  updateCustomer(customer: UpdateCustomerModel) {
+    const user = this.getUserFromLocalStorage();
+
+    this.http.put(`${environment.apiBase}/customer/update/${user.id}`, customer)
+    .subscribe()
+  }
+
   //Account Service
 
   findAccount(id: string) {
@@ -130,8 +137,8 @@ export class ServiceService {
     .subscribe();
   }
 
-  getDepositHistory(id: string) {
-    return this.http.get<DepositModel[]>(`${environment.apiBase}/deposit/get-history/${id}`)
+  getDepositHistory(id: string, data: PaginationAndDataRange) {
+    return this.http.post<DepositModel[]>(`${environment.apiBase}/deposit/get-history/${id}`, data)
   }
 
   //Transfer Service
@@ -141,16 +148,16 @@ export class ServiceService {
     .subscribe()
   }
 
-  getIncomes(id: string) {
-    return this.http.get<TransferModel>(`${environment.apiBase}/transfer/get-history-in/${id}`)
+  getIncomes(id: string, data: PaginationAndDataRange) {
+    return this.http.post<TransferModel[]>(`${environment.apiBase}/transfer/get-history-in/${id}`, data)
   }
 
-  getOutcomes(id: string) {
-    return this.http.get<TransferModel>(`${environment.apiBase}/transfer/get-history-out/${id}`)
+  getOutcomes(id: string, data: PaginationAndDataRange) {
+    return this.http.post<TransferModel[]>(`${environment.apiBase}/transfer/get-history-out/${id}`, data)
   }
 
-  getTransferHistory(id: string) {
-    return this.http.get<TransferModel>(`${environment.apiBase}/transfer/get-history/${id}`)
+  getTransferHistory(id: string, data: PaginationAndDataRange) {
+    return this.http.post<TransferModel[]>(`${environment.apiBase}/transfer/get-history/${id}`, data)
   }
 
 }

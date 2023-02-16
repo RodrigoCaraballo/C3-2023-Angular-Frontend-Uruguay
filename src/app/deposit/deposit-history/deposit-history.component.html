@@ -1,12 +1,33 @@
-<app-deposit-info (idSend)="selectedId = $event.valueOf()"></app-deposit-info>
+<app-deposit-info (idSend)="getHistory($event.valueOf())"></app-deposit-info>
 
-<div class="relative p-4 shadow-lg rounded-lg bg-blueGray-100 border-0 w-9/12 mx-auto mt-4">
+<div *ngIf="showComponent" class="relative p-4 shadow-lg rounded-lg bg-blueGray-100 border-0 w-9/12 mx-auto mt-4">
   <div class="flex flex-col rounded-t bg-white mb-0 p-5">
+    <h1>Deposits List</h1>
 
-    <div class="flex flex-row justify-between">
-      <h1>Deposits List</h1>
+    <div class="flex flex-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Start date">
+          <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
 
-      <button class="bg-blue-600 text-white px-2 rounded border border-gray-300 hover:bg-blue-400" (click)="getHistory()">Get History</button>
+        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+      </mat-form-field>
+
+      <div class="flex flex-col ml-4">
+        <button class="bg-blue-600 text-white rounded border p-1 border-gray-300 hover:bg-blue-400 w-full" (click)="onDateChange()">
+          Search
+        </button>
+
+        <button class="bg-blue-600 text-white rounded border p-1 border-gray-300 hover:bg-blue-400 w-full" (click)="removeFilter()">
+          Clear
+        </button>
+      </div>
     </div>
 
 
@@ -21,8 +42,13 @@
         </tr>
       </table>
 
-      <div>
-        <app-pagination></app-pagination>
+        <div>
+          <mat-paginator
+          [length]="deposits.length"
+          [pageSize]="limit"
+          (page)="onPageChange($event)"
+          aria-label="Select page">
+        </mat-paginator>
       </div>
   </div>
 </div>

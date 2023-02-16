@@ -21,7 +21,6 @@ export class DepositInfoComponent implements OnInit{
     this.getAccounts()
   }
 
-
   formAccount = this.fb.group({
     id: [''],
   })

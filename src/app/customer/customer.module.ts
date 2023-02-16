@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomerChangePasswordComponent, CustomerInfoComponent, ModifyCustomerComponent } from './';
-import { FormsModule } from '@angular/forms';
+import { CustomerChangePasswordComponent, CustomerInfoComponent } from './';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomerRoutingModule } from './customer-routing.module';
 
 
@@ -10,14 +10,13 @@ import { CustomerRoutingModule } from './customer-routing.module';
   declarations: [
     CustomerChangePasswordComponent,
     CustomerInfoComponent,
-    ModifyCustomerComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   exports: [CustomerChangePasswordComponent,
-    CustomerInfoComponent,
-    ModifyCustomerComponent]
+    CustomerInfoComponent,]
 })
 export class CustomerModule { }

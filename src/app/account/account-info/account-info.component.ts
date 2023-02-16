@@ -24,7 +24,6 @@ export class AccountInfoComponent implements OnInit {
     this.accountList.accountsSource
     .subscribe(accounts => {
       this.accounts = accounts;
-      console.log(this.accounts);
 
     })
 
@@ -41,5 +40,6 @@ export class AccountInfoComponent implements OnInit {
 
     this.accountInfo.changeAccount(this.account)
   }
+
 
 }

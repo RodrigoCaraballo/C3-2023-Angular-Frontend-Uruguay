@@ -2,17 +2,54 @@
   <div class="flex flex-col rounded-t bg-white mb-0 p-5">
     <h1><span class="text-4xl"> Customer Information </span></h1>
 
-    <ul class="mb-2 text-xl" [(ngModel)]="customer">
-      <li class="mb-3">Full Name: {{customer.fullName}}</li>
-      <li class="mb-3">Document Type: {{customer.documentType.name}}</li>
-      <li class="mb-3">Document: {{customer.document}}</li>
-      <li class="mb-3">Email: {{customer.email}}</li>
-      <li class="mb-3">Phone: {{customer.phone}}</li>
+      <ul class="mb-2 text-xl" [(ngModel)]="customer" *ngIf="disabledToEdit && customer">
+      <li class="mb-3">Full Name:
+        <p *ngIf="disabledToEdit" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">{{customer.fullName}}</p>
+      </li>
+      <li class="mb-3">Document Type:
+        <p *ngIf="disabledToEdit" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">{{customer.documentType.name}}</p>
+
+      </li>
+      <li class="mb-3">Document:
+        <p *ngIf="disabledToEdit" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">{{customer.document}}</p>
+      </li>
+      <li class="mb-3">Email:
+        <p *ngIf="disabledToEdit" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">{{customer.email}}</p>
+      </li>
+      <li class="mb-3">Phone:
+        <p *ngIf="disabledToEdit" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">{{customer.phone}}</p>
+      </li>
     </ul>
 
+  <form [formGroup]="formUser" *ngIf="!disabledToEdit">
+
+    <ul class="mb-2 text-xl">
+    <li class="mb-3">Full Name:
+      <input name="fullName" formControlName="fullName" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+    </li>
+    <li class="mb-3">Document Type:
+      <select formControlName="documentType" name="documentType" id="documentType" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+        <option>National ID</option>
+        <option>Passport ID</option>
+      </select>
+    </li>
+    <li class="mb-3">Document:
+      <input name="document" formControlName="document" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+    </li>
+    <li class="mb-3">Email:
+      <input name="email" formControlName="email" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="email">
+    </li>
+    <li class="mb-3">Phone:
+      <input name="phone" formControlName="phone" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text">
+    </li>
+  </ul>
+</form>
+
     <div class="flex justify-end p-2 gap-2">
-      <a href="http://localhost:4200/profile/change-password" class="rounded border px-4 py-1 bg-blue-600 text-white hover:bg-blue-500">Change Password</a>
-      <a href="http://localhost:4200/profile/edit-profile" class="rounded border px-4 py-1 bg-blue-600 text-white hover:bg-blue-500">Edit Profile</a>
+      <a href="http://localhost:4200/profile/change-password" class="rounded border px-4 py-1 bg-blue-600 text-white hover:bg-blue-500" *ngIf="disabledToEdit">Change Password</a>
+      <button class="rounded border px-4 py-1 bg-blue-600 text-white hover:bg-blue-500" (click)="clickEdit()" *ngIf="disabledToEdit">Edit Profile</button>
+      <button class="rounded border px-4 py-1 bg-blue-600 text-white hover:bg-blue-500" (click)="disabledToEdit = true" *ngIf="!disabledToEdit">Cancel</button>
+      <button class="rounded border px-4 py-1 bg-blue-600 text-white hover:bg-blue-500" (click)="updateCustomer()" *ngIf="!disabledToEdit">Save</button>
     </div>
   </div>
 </div>

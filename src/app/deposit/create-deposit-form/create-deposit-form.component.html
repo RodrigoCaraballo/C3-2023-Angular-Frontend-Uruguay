@@ -2,20 +2,23 @@
   <div class="flex flex-col rounded-t bg-white mb-0 p-5">
     <h1 class="text-center">Make a Deposit</h1>
 
-      <p class="text-center">Select One ID</p>
-      <select name="ids" id="" class="px-4 py-2 shadow rounded-sm mb-5 w-full" [(ngModel)]="selectedId">
-        <option class="text-2xl rounded-sm" >Select an Account</option>
-        <option class="text-2xl rounded-sm" *ngFor="let account of accounts">{{account.id}}</option>
-      </select>
+      <form [formGroup]="formDeposit">
 
-      <div>
-      <p class="text-xl">Amount</p>
-      <input type="number" name="amount" placeholder="200" class="w-full border rounded-sm p-2 mb-2" [(ngModel)]="amount">
+        <p class="text-center">Select One ID</p>
+        <select name="ids" id="" class="px-4 py-2 shadow rounded-sm mb-5 w-full" formControlName="accountId">
+          <option class="text-2xl rounded-sm" >Select an Account</option>
+          <option class="text-2xl rounded-sm" *ngFor="let account of accounts">{{account.id}}</option>
+        </select>
+
+        <div>
+          <p class="text-xl">Amount</p>
+          <input type="number" name="amount" placeholder="200" class="w-full border rounded-sm p-2 mb-2" formControlName="amount">
+        </div>
+
+        <div class="flex justify-end mt-2">
+          <input type="submit" class="bg-blue-600 text-white p-2 rounded border border-gray-300 mr-4 hover:bg-blue-400" value="Confirm" (click)="createDeposit()">
+        </div>
+      </form>
+
+      </div>
     </div>
-
-    <div class="flex justify-end mt-2">
-      <input type="submit" class="bg-blue-600 text-white p-2 rounded border border-gray-300 mr-4 hover:bg-blue-400" value="Confirm" (click)="createDeposit()">
-    </div>
-
-  </div>
-</div>

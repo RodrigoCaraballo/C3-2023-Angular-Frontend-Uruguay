@@ -1,40 +1,98 @@
+<app-transfer-info (idSend)="getTransferHistory($event.valueOf())"></app-transfer-info>
+
 <div class="relative p-4 shadow-lg rounded-lg bg-blueGray-100 border-0 w-9/12 mx-auto mt-4">
   <div class="flex flex-col rounded-t bg-white mb-0 p-5">
     <h1>Transfers List</h1>
 
     <div class="flex flex-col lg:flex-row justify-center gap-1 mb-4">
-      <button class="py-1 px-4 mb-2 shadow rounded hover:text-white hover:bg-blue-600">Incomes</button>
-      <button class="py-1 px-4 mb-2 shadow rounded hover:text-white hover:bg-blue-600">Outcomes</button>
+      <button class="py-1 px-4 mb-2 shadow rounded hover:text-white hover:bg-blue-600" (click)="activeHistory('All')">All</button>
+      <button class="py-1 px-4 mb-2 shadow rounded hover:text-white hover:bg-blue-600" (click)="activeHistory('Incomes')">Incomes</button>
+      <button class="py-1 px-4 mb-2 shadow rounded hover:text-white hover:bg-blue-600" (click)="activeHistory('Outcomes')">Outcomes</button>
     </div>
 
-      <table class="mb-5" *ngIf="true">
+    <div class="flex flex-row">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date">
+        <input matEndDate formControlName="end" placeholder="End date">
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+
+      <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+      <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+    </mat-form-field>
+
+    <div class="flex flex-col ml-4">
+      <button class="bg-blue-600 text-white rounded border p-1 border-gray-300 hover:bg-blue-400 w-full" (click)="onDateChange()">
+        Search
+      </button>
+
+      <button class="bg-blue-600 text-white rounded border p-1 border-gray-300 hover:bg-blue-400 w-full" (click)="removeFilter()">
+        Clear
+      </button>
+    </div>
+  </div>
+
+    <table class="mb-5" *ngIf="isAll">
+      <tr>
+        <th>Account</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Reason</th>
+      </tr>
+      <tr *ngFor="let transfer of history">
+        <td *ngIf="this.selectedId !== transfer.income.id">{{transfer.income.id}}</td>
+        <td *ngIf="this.selectedId !== transfer.outcome.id">{{transfer.outcome.id}}</td>
+        <td *ngIf="this.selectedId !== transfer.income.id">Sent</td>
+        <td *ngIf="this.selectedId !== transfer.outcome.id">Income</td>
+        <td>$ {{transfer.amount}}</td>
+        <td>{{transfer.dateTime | date}}</td>
+        <td><span title="{{transfer.reason}}"> Show Reason </span></td>
+      </tr>
+    </table>
+
+      <table class="mb-5" *ngIf="isIncomes">
         <tr>
           <th>Income</th>
           <th>Amount</th>
           <th>Date</th>
           <th>Reason</th>
         </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr *ngFor="let transfer of incomes">
+          <td>{{transfer.outcome.id}}</td>
+          <td> ${{transfer.amount}}</td>
+          <td>{{transfer.dateTime | date}}</td>
+          <td>{{transfer.reason}}</td>
         </tr>
       </table>
 
-      <table class="mb-5" *ngIf="false">
+      <table class="mb-5" *ngIf="isOutcomes">
         <tr>
           <th>Outcome</th>
           <th>Amount</th>
           <th>Date</th>
           <th>Reason</th>
         </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr *ngFor="let transfer of outcomes">
+          <td>{{transfer.income.id}}</td>
+          <td>$ {{transfer.amount}}</td>
+          <td>{{transfer.dateTime | date}}</td>
+          <td><span title="{{transfer.reason}}"> Show Reason </span></td>
         </tr>
       </table>
+
+      <div>
+        <mat-paginator
+        [length]="historyLength"
+        [pageSize]="limit"
+        (page)="onPageChange($event)"
+        aria-label="Select page">
+      </mat-paginator>
+    </div>
   </div>
 </div>

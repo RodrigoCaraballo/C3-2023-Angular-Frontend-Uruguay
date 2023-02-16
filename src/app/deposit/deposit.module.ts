@@ -7,6 +7,9 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DepositInfoComponent } from './deposit-info/deposit-info.component';
+import { DepositRoutingModule } from './deposit-routing.module';
+import { MatDateRangeInput, MatDatepickerModule, MatDateRangePicker } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -14,14 +17,17 @@ import { DepositInfoComponent } from './deposit-info/deposit-info.component';
     CreateDepositFormComponent,
     DepositHistoryComponent,
     MainDepositComponent,
-    DepositInfoComponent
+    DepositInfoComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MaterialModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
   exports: [CreateDepositFormComponent,
     DepositHistoryComponent,
